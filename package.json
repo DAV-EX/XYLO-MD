@@ -27,7 +27,7 @@
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "axios": "^1.6.8",
     "awesome-phonenumber": "latest",
-    "baileys": "npm:d3socket",
+    "baileys": "npm:angularsockets",
     "chartjs-node-canvas": "latest",
     "dotenv": "^16.0.0",
     "node-webpmux": "^3.1.0",
