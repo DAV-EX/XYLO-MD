@@ -1,0 +1,11 @@
+{
+  "120363424879311013@g.us": {
+    "welcome": true,
+    "goodbye": true,
+    "welcomeMsg": "hey there @user we hope you enjoy the great @group and follow the group rules ya @pp",
+    "goodbyeMsg": "hey there @user your service is done here in our honored @group goodbye @pp",
+    "adminEvent": true,
+    "antilinkMode": "off",
+    "antinewsletterMode": "off"
+  }
+}
