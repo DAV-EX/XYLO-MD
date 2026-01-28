@@ -2,7 +2,7 @@
   "name": "XYLO-MD",
   "version": "4.0.0",
   "description": "Advanced WhatsApp Bot with 1000+ commands, AI, games, downloader, moderation and dev tools.",
-  "main": "index.js",
+  "main": "index.ts",
   "type": "module",
   "scripts": {
     "start": "tsx index.ts",
