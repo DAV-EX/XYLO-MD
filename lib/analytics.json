@@ -1,0 +1,535 @@
+{
+  "120363405193437188@g.us": {
+    "users": {
+      "2349133354644": {
+        "totalMessages": 214,
+        "images": 0,
+        "stickers": 9,
+        "audio": 1,
+        "video": 0,
+        "lastMessageTime": 1770692080,
+        "firstMessageTime": 1769539124
+      },
+      "256701583113": {
+        "totalMessages": 34,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769548193,
+        "firstMessageTime": 1769539467
+      },
+      "2349036543288": {
+        "totalMessages": 44,
+        "images": 2,
+        "stickers": 14,
+        "audio": 0,
+        "video": 1,
+        "lastMessageTime": 1769585564,
+        "firstMessageTime": 1769539751
+      },
+      "2348141859463": {
+        "totalMessages": 35,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769548007,
+        "firstMessageTime": 1769539838
+      },
+      "2348055735780": {
+        "totalMessages": 32,
+        "images": 0,
+        "stickers": 17,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1770689898,
+        "firstMessageTime": 1769551523
+      }
+    },
+    "peakTimes": {
+      "491538": 67,
+      "491539": 24,
+      "491540": 18,
+      "491541": 62,
+      "491542": 74,
+      "491543": 8,
+      "491544": 19,
+      "491545": 16,
+      "491550": 5,
+      "491551": 19,
+      "491857": 24,
+      "491858": 23
+    },
+    "lastMessage": {
+      "2349133354644": 1770692080,
+      "256701583113": 1769548193,
+      "2349036543288": 1769585564,
+      "2348141859463": 1769548007,
+      "2348055735780": 1770689898
+    }
+  },
+  "120363404799610201@g.us": {
+    "users": {
+      "2202501632": {
+        "totalMessages": 2,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769561335,
+        "firstMessageTime": 1769561332
+      },
+      "18059178858": {
+        "totalMessages": 1,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769539382,
+        "firstMessageTime": 1769539382
+      },
+      "2347041411510": {
+        "totalMessages": 2,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769539742,
+        "firstMessageTime": 1769539421
+      },
+      "2349112184365": {
+        "totalMessages": 1,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769539771,
+        "firstMessageTime": 1769539771
+      },
+      "237675044467": {
+        "totalMessages": 1,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769540665,
+        "firstMessageTime": 1769540665
+      },
+      "2348026847947": {
+        "totalMessages": 1,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769540770,
+        "firstMessageTime": 1769540770
+      },
+      "2347071238133": {
+        "totalMessages": 2,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769546662,
+        "firstMessageTime": 1769546660
+      },
+      "923404576723": {
+        "totalMessages": 5,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769547895,
+        "firstMessageTime": 1769547864
+      },
+      "2348131466263": {
+        "totalMessages": 1,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769550941,
+        "firstMessageTime": 1769550941
+      },
+      "2349074797820": {
+        "totalMessages": 1,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769552028,
+        "firstMessageTime": 1769552028
+      },
+      "918972767390": {
+        "totalMessages": 1,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769553940,
+        "firstMessageTime": 1769553940
+      },
+      "2347081827038": {
+        "totalMessages": 1,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769562708,
+        "firstMessageTime": 1769562708
+      }
+    },
+    "peakTimes": {
+      "491538": 4,
+      "491539": 2,
+      "491540": 2,
+      "491541": 6,
+      "491542": 2,
+      "491544": 2,
+      "491545": 1
+    },
+    "lastMessage": {
+      "2202501632": 1769561335,
+      "18059178858": 1769539382,
+      "2347041411510": 1769539742,
+      "2349112184365": 1769539771,
+      "237675044467": 1769540665,
+      "2348026847947": 1769540770,
+      "2347071238133": 1769546662,
+      "923404576723": 1769547895,
+      "2348131466263": 1769550941,
+      "2349074797820": 1769552028,
+      "918972767390": 1769553940,
+      "2347081827038": 1769562708
+    }
+  },
+  "120363405839625242@g.us": {
+    "users": {
+      "2349133354644": {
+        "totalMessages": 3,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769541635,
+        "firstMessageTime": 1769541593
+      },
+      "2348117238790": {
+        "totalMessages": 1,
+        "images": 0,
+        "stickers": 1,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769543252,
+        "firstMessageTime": 1769543252
+      },
+      "4915257096609": {
+        "totalMessages": 29,
+        "images": 0,
+        "stickers": 8,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769551555,
+        "firstMessageTime": 1769543273
+      },
+      "237682151144": {
+        "totalMessages": 2,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769545333,
+        "firstMessageTime": 1769543468
+      },
+      "2348148135569": {
+        "totalMessages": 38,
+        "images": 0,
+        "stickers": 14,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769553028,
+        "firstMessageTime": 1769543702
+      },
+      "2348113815327": {
+        "totalMessages": 34,
+        "images": 0,
+        "stickers": 3,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769562287,
+        "firstMessageTime": 1769544542
+      },
+      "2347036716179": {
+        "totalMessages": 13,
+        "images": 0,
+        "stickers": 4,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769561178,
+        "firstMessageTime": 1769544572
+      },
+      "2347075966052": {
+        "totalMessages": 2,
+        "images": 0,
+        "stickers": 1,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769544724,
+        "firstMessageTime": 1769544724
+      },
+      "2349076068594": {
+        "totalMessages": 110,
+        "images": 0,
+        "stickers": 24,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769555289,
+        "firstMessageTime": 1769544745
+      },
+      "2348127835264": {
+        "totalMessages": 89,
+        "images": 0,
+        "stickers": 23,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769565556,
+        "firstMessageTime": 1769544950
+      },
+      "2349021617916": {
+        "totalMessages": 243,
+        "images": 0,
+        "stickers": 7,
+        "audio": 1,
+        "video": 0,
+        "lastMessageTime": 1769562309,
+        "firstMessageTime": 1769545093
+      },
+      "2347082907998": {
+        "totalMessages": 413,
+        "images": 0,
+        "stickers": 16,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769586842,
+        "firstMessageTime": 1769546640
+      },
+      "2348075705360": {
+        "totalMessages": 9,
+        "images": 0,
+        "stickers": 3,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769583117,
+        "firstMessageTime": 1769546650
+      },
+      "2348028069651": {
+        "totalMessages": 11,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769547513,
+        "firstMessageTime": 1769546652
+      },
+      "2349070066206": {
+        "totalMessages": 49,
+        "images": 0,
+        "stickers": 1,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769586849,
+        "firstMessageTime": 1769548880
+      },
+      "2349012095093": {
+        "totalMessages": 193,
+        "images": 0,
+        "stickers": 21,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769555295,
+        "firstMessageTime": 1769548891
+      },
+      "2348064921292": {
+        "totalMessages": 96,
+        "images": 0,
+        "stickers": 15,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769555278,
+        "firstMessageTime": 1769548931
+      },
+      "2348168679968": {
+        "totalMessages": 113,
+        "images": 0,
+        "stickers": 13,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769586817,
+        "firstMessageTime": 1769549121
+      },
+      "2348127366773": {
+        "totalMessages": 140,
+        "images": 0,
+        "stickers": 46,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769583119,
+        "firstMessageTime": 1769549360
+      },
+      "233242151713": {
+        "totalMessages": 4,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769550021,
+        "firstMessageTime": 1769549555
+      },
+      "2347036636710": {
+        "totalMessages": 3,
+        "images": 0,
+        "stickers": 3,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769550205,
+        "firstMessageTime": 1769550201
+      },
+      "2349138627173": {
+        "totalMessages": 3,
+        "images": 0,
+        "stickers": 1,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769551768,
+        "firstMessageTime": 1769551739
+      },
+      "2347056976510": {
+        "totalMessages": 2,
+        "images": 0,
+        "stickers": 2,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769553514,
+        "firstMessageTime": 1769553340
+      },
+      "264857838389": {
+        "totalMessages": 21,
+        "images": 0,
+        "stickers": 11,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1770693642,
+        "firstMessageTime": 1769553605
+      },
+      "2347048294447": {
+        "totalMessages": 31,
+        "images": 0,
+        "stickers": 9,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769555298,
+        "firstMessageTime": 1769553887
+      },
+      "2347081776210": {
+        "totalMessages": 37,
+        "images": 0,
+        "stickers": 3,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769555307,
+        "firstMessageTime": 1769553958
+      },
+      "233597091747": {
+        "totalMessages": 3,
+        "images": 0,
+        "stickers": 1,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769561099,
+        "firstMessageTime": 1769561084
+      },
+      "2348105501351": {
+        "totalMessages": 4,
+        "images": 0,
+        "stickers": 4,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769561524,
+        "firstMessageTime": 1769561103
+      },
+      "2347049139088": {
+        "totalMessages": 1,
+        "images": 0,
+        "stickers": 1,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769561149,
+        "firstMessageTime": 1769561149
+      },
+      "2349029564009": {
+        "totalMessages": 1,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769584870,
+        "firstMessageTime": 1769584870
+      },
+      "2349068630392": {
+        "totalMessages": 4,
+        "images": 0,
+        "stickers": 0,
+        "audio": 0,
+        "video": 0,
+        "lastMessageTime": 1769586753,
+        "firstMessageTime": 1769586672
+      }
+    },
+    "peakTimes": {
+      "491539": 9,
+      "491540": 53,
+      "491541": 490,
+      "491542": 879,
+      "491543": 121,
+      "491544": 81,
+      "491545": 12,
+      "491550": 3,
+      "491551": 53,
+      "491859": 1
+    },
+    "lastMessage": {
+      "2349133354644": 1769541635,
+      "2348117238790": 1769543252,
+      "4915257096609": 1769551555,
+      "237682151144": 1769545333,
+      "2348148135569": 1769553028,
+      "2348113815327": 1769562287,
+      "2347036716179": 1769561178,
+      "2347075966052": 1769544724,
+      "2349076068594": 1769555289,
+      "2348127835264": 1769565556,
+      "2349021617916": 1769562309,
+      "2347082907998": 1769586842,
+      "2348075705360": 1769583117,
+      "2348028069651": 1769547513,
+      "2349070066206": 1769586849,
+      "2349012095093": 1769555295,
+      "2348064921292": 1769555278,
+      "2348168679968": 1769586817,
+      "2348127366773": 1769583119,
+      "233242151713": 1769550021,
+      "2347036636710": 1769550205,
+      "2349138627173": 1769551768,
+      "2347056976510": 1769553514,
+      "264857838389": 1770693642,
+      "2347048294447": 1769555298,
+      "2347081776210": 1769555307,
+      "233597091747": 1769561099,
+      "2348105501351": 1769561524,
+      "2347049139088": 1769561149,
+      "2349029564009": 1769584870,
+      "2349068630392": 1769586753
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "120363401662816949@g.us": {
+    "welcome": false,
+    "goodbye": false,
+    "welcomeMsg": "Welcome @user to @group @pp",
+    "goodbyeMsg": "Goodbye @user from @group 😭 @pp",
+    "adminEvent": false,
+    "antilinkMode": "off",
+    "antinewsletterMode": "off"
+  },
+  "120363405193437188@g.us": {
+    "welcome": true,
+    "goodbye": true,
+    "welcomeMsg": "yo fam @user you highly welcomed to @group",
+    "goodbyeMsg": "urm @user just left this great @group",
+    "adminEvent": true,
+    "antilinkMode": "off",
+    "antinewsletterMode": "off",
+    "antiGroupMention": "warn"
+  }
+}
