@@ -54,44 +54,64 @@ export default [
   category: 'info',
   handler: async ({ msg, Dave, from, isGroup, groupMetadata, reply, args }) => {
     try {
+      // 1. Get the Raw ID (could be LID or JID)
       const mentioned = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
       const quotedParticipant = msg.message?.extendedTextMessage?.contextInfo?.participant
       const inputJid = args[0] ? (args[0].includes('@') ? args[0] : args[0].replace(/[^0-9]/g, '') + '@s.whatsapp.net') : null
       const sender = msg.key?.participant || msg.key?.remoteJid || ''
 
-      // 1. Identify the raw target (LID or JID)
-      const rawTarget = quotedParticipant || mentioned || inputJid || sender
+      const rawTarget = Dave.decodeJid(quotedParticipant || mentioned || inputJid || sender)
       if (!rawTarget) return reply('❌ Could not identify user.')
 
-      // 2. Convert to standardized JID and clean Phone Number
-      const pnFull = await lidToPhone(Dave, rawTarget)
-      const targetJid = pnFull.includes('@') ? pnFull : pnFull + '@s.whatsapp.net'
-      const cleanPn = targetJid.split('@')[0] // This removes the @s.whatsapp.net
+      // 2. Convert LID to Phone JID
+      // This is crucial for Bio and matching in group lists
+      const pnResult = await lidToPhone(Dave, rawTarget)
+      const targetJid = Dave.decodeJid(pnResult.includes('@') ? pnResult : pnResult + '@s.whatsapp.net')
+      const cleanPn = targetJid.split('@')[0]
 
-      // 3. Get User Data (Database)
-      const user = await User.findOne({ userId: targetJid }) || await User.findOne({ userId: rawTarget })
-
-      // 4. Fetch Bio (About) - Using standardized JID
+      // 3. Fetch Bio (MUST use the Phone JID, not LID)
       let bio = 'No bio'
       try {
         const statusData = await Dave.fetchStatus(targetJid)
         if (statusData && statusData.status) bio = statusData.status
       } catch {
-        // Fallback for some privacy settings or LID issues
-        bio = 'Hidden or Not Available'
+        bio = 'Bio Hidden'
       }
 
-      // 5. Handle Name 
-      // If the target is the sender, use pushName. 
-      // Otherwise, check if they are in the group to find their name (if available) or use PN.
-      let targetName = 'Unknown'
-      if (rawTarget === sender || targetJid === sender) {
+      // 4. Role & Name logic
+      let role = 'N/A'
+      let targetName = cleanPn // Default to PN
+
+      // If user is the sender, we already have their name
+      if (rawTarget === Dave.decodeJid(sender)) {
         targetName = msg.pushName || 'You'
-      } else {
-        targetName = cleanPn // Default to PN if no store/name found
       }
 
-      // 6. Fetch Profile Picture
+      if (isGroup && groupMetadata?.participants) {
+        // We find the user by checking both their LID and their JID 
+        // because group lists can contain either depending on the version
+        const uData = groupMetadata.participants.find(u => 
+          Dave.decodeJid(u.id) === rawTarget || 
+          Dave.decodeJid(u.id) === targetJid
+        )
+
+        if (uData) {
+          // Identify Role
+          role = uData.admin ? (uData.admin === 'superadmin' ? '👑 Owner' : '🛡️ Admin') : '👤 Member'
+          
+          // Get Name from group metadata (Notify name or Verified name)
+          if (rawTarget !== Dave.decodeJid(sender)) {
+            targetName = uData.notify || uData.name || uData.verifiedName || cleanPn
+          }
+        }
+      }
+
+      // 5. Database & Spouse logic
+      const user = await User.findOne({ userId: targetJid }) || await User.findOne({ userId: rawTarget })
+      const spousePn = user?.spouse ? await lidToPhone(Dave, user.spouse) : null
+      const spouseJid = spousePn ? Dave.decodeJid(spousePn.includes('@') ? spousePn : spousePn + '@s.whatsapp.net') : null
+
+      // 6. Profile Picture
       let pfp
       try {
         pfp = await Dave.profilePictureUrl(targetJid, 'image')
@@ -99,18 +119,22 @@ export default [
         pfp = 'https://i.ibb.co/j3pRQf6/user.png'
       }
 
-      const spousePn = user?.spouse ? await lidToPhone(Dave, user.spouse) : null
-      const spouseJid = spousePn ? (spousePn.includes('@') ? spousePn : spousePn + '@s.whatsapp.net') : null
+      const text = `👤 *User Info*\n\n` +
+                   `• *Name:* ${targetName}\n` +
+                   `• *PN:* ${cleanPn}\n` +
+                   `• *JID:* ${targetJid}\n` +
+                   `• *Bio:* ${bio}\n` +
+                   `• *Role:* ${role}\n` +
+                   `• *Coins:* ${user?.coins || 0}\n` +
+                   `• *Spouse:* ${spouseJid ? '@' + spouseJid.split('@')[0] : 'Single'}\n` +
+                   `• *Tag:* ${user?.customTag || 'None'}`
 
-      let role = 'N/A'
-      if (isGroup && groupMetadata?.participants) {
-        const uData = groupMetadata.participants.find(u => u.id === rawTarget || u.id === targetJid)
-        if (uData) role = uData.admin ? '🛡 Admin' : '👤 Member'
-      }
+      await Dave.sendMessage(from, { 
+        image: { url: pfp }, 
+        caption: text, 
+        mentions: spouseJid ? [spouseJid, targetJid] : [targetJid] 
+      }, { quoted: msg })
 
-      const text = `👤 *User Info*\n\n• *Name:* ${targetName}\n• *PN:* ${cleanPn}\n• *JID:* ${targetJid}\n• *Bio:* ${bio}\n• *Role:* ${role}\n• *Coins:* ${user?.coins || 0}\n• *Spouse:* ${spouseJid ? '@' + spouseJid.split('@')[0] : 'Single'}\n• *Tag:* ${user?.customTag || 'None'}`
-
-      await Dave.sendMessage(from, { image: { url: pfp }, caption: text, mentions: spouseJid ? [spouseJid] : [] }, { quoted: msg })
     } catch (e) {
       console.error(e)
       reply('❌ Failed to get user info.')
