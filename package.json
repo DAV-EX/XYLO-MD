@@ -29,7 +29,6 @@
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@types/express": "^5.0.6",
     "@types/node": "^25.0.10",
-    "@whiskeysockets/baileys": "^7.0.0-rc.9",
     "adm-zip": "^0.5.16",
     "awesome-phonenumber": "latest",
     "axios": "^1.6.8",
