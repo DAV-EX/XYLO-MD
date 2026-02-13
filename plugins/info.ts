@@ -49,92 +49,77 @@ export default [
   },
   {
     name: 'whois',
-    description: 'Get info about a user (works in groups and DMs)',
+    description: 'Get info about a user',
     alias: ['user'],
     category: 'info',
     handler: async ({ msg, Dave, from, isGroup, groupMetadata, reply, args }) => {
         try {
-            // 1. Identify the target
+            // 1. Identify Target
             const mentioned = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
             const quoted = msg.message?.extendedTextMessage?.contextInfo?.participant
-            // If user types numbers, strip non-numeric chars
             const inputArg = args[0] ? args[0].replace(/[^0-9]/g, '') : null
             
-            // Priority: Mention > Quoted > Input Number > Sender
-            let rawTarget = mentioned || quoted || (inputArg ? `${inputArg}@s.whatsapp.net` : null) || msg.key?.participant || msg.key?.remoteJid
+            let rawTarget = mentioned || quoted || (inputArg ? `${inputArg}@s.whatsapp.net` : null) || msg.key.participant || msg.key.remoteJid
             
-            if (!rawTarget) return reply('❌ Could not identify user.')
-
-            // 2. Normalize JID (Convert LID to Phone if needed)
-            // We need the ID in format: 123456789@s.whatsapp.net
-            let targetJid = rawTarget
-            if (rawTarget.includes('lid')) {
-                targetJid = await lidToPhone(Dave, rawTarget) // Ensure your lidUtils handles this
-            }
-            
-            // Clean the JID to ensure no device identifiers (like :12@s.whatsapp.net)
-            targetJid = targetJid.split(':')[0].split('@')[0] + '@s.whatsapp.net'
+            // Standardize to @s.whatsapp.net (Crucial for Bio/Name)
+            let targetJid = rawTarget.split(':')[0].split('@')[0] + '@s.whatsapp.net'
             const cleanPN = targetJid.split('@')[0]
 
-            // 3. Resolve Name
-            // If the target is the sender, we have their pushName.
-            // If target is someone else, we likely DON'T have their name unless using a contact store.
-            // Fallback: Use the phone number as the name.
+            // 2. Force Fetch Name & Bio (The "Royboy" Fix)
             let userName = 'Unknown'
-            
+            let bio = 'No Bio / Private'
+
+            // Check if it's the sender first
             if (targetJid === (msg.key.participant || msg.key.remoteJid)) {
-                userName = msg.pushName || 'Unknown' 
+                userName = msg.pushName || 'Unknown'
             } else {
-                // Try to get name from contact store (if your bot has one)
-                // Otherwise use the formatted number
-                userName = `@${cleanPN}` 
+                // Try to find the name in group metadata if in a group
+                if (isGroup && groupMetadata?.participants) {
+                    const p = groupMetadata.participants.find(v => v.id === targetJid)
+                    // Note: Baileys usually doesn't store PushNames in groupMetadata 
+                    // unless that person has spoken recently.
+                }
+                userName = `@${cleanPN}` // Default to @Number if name is cached nowhere
             }
 
-            // 4. Fetch Bio (About)
-            let bio = '🔒 Private / No Bio'
+            // 3. Fetch Bio (About) - Using the standardized JID
             try {
-                // This request fails if user privacy is "My Contacts" or "Nobody"
-                const statusData = await Dave.fetchStatus(targetJid)
-                if (statusData && statusData.status) {
-                    bio = statusData.status
+                const status = await Dave.fetchStatus(targetJid)
+                if (status && status.status) {
+                    bio = status.status
                 }
             } catch (e) {
-                // 401 Unauthorized is common here due to privacy
-                // console.log(`Privacy blocked bio for ${targetJid}`)
+                // If it fails, it's 99% a privacy setting ("My Contacts" only)
+                bio = '🔒 Private'
             }
 
-            // 5. Database & PFP
-            const user = await User.findOne({ userId: targetJid })
-            
-            let pfp
+            // 4. Fetch Profile Picture
+            let pfp = 'https://i.ibb.co/j3pRQf6/user.png'
             try {
                 pfp = await Dave.profilePictureUrl(targetJid, 'image')
-            } catch {
-                pfp = 'https://i.ibb.co/j3pRQf6/user.png'
-            }
+            } catch {}
 
-            // 6. Resolve Group Role
+            // 5. Database Lookup
+            const user = await User.findOne({ userId: targetJid })
+            
+            // 6. Role in group
             let role = 'N/A'
             if (isGroup && groupMetadata?.participants) {
                 const uData = groupMetadata.participants.find(u => u.id === targetJid)
                 if (uData) role = uData.admin ? '🛡 Admin' : '👤 Member'
             }
 
-            // 7. Resolve Spouse
-            const spousePn = user?.spouse ? await lidToPhone(Dave, user.spouse) : null
-            const spouseDisplay = spousePn ? '@' + spousePn.split('@')[0] : 'Single'
-
-            const text = `👤 *User Info*\n\n• *Name:* ${userName}\n• *PN:* ${cleanPN}\n• *JID:* ${targetJid}\n• *Bio:* ${bio}\n• *Role:* ${role}\n• *Coins:* ${user?.coins || 0}\n• *Spouse:* ${spouseDisplay}\n• *Tag:* ${user?.customTag || 'None'}`
+            const text = `👤 *User Info*\n\n• *Number:* ${cleanPN}\n• *Name:* ${userName}\n• *About:* ${bio}\n• *Role:* ${role}\n• *Coins:* ${user?.coins || 0}\n• *Tag:* ${user?.customTag || 'None'}`
 
             await Dave.sendMessage(from, { 
                 image: { url: pfp }, 
                 caption: text, 
-                mentions: spousePn ? [user.spouse] : [] 
+                mentions: [targetJid] 
             }, { quoted: msg })
 
         } catch (e) {
-            console.error('Whois Error:', e)
-            reply('❌ Failed to get user info.')
+            console.error(e)
+            reply('❌ Error fetching info.')
         }
     }
 },
