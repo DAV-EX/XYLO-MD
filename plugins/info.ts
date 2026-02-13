@@ -48,80 +48,74 @@ export default [
     }
   },
   {
-    name: 'whois',
-    description: 'Get info about a user',
-    alias: ['user'],
-    category: 'info',
-    handler: async ({ msg, Dave, from, isGroup, groupMetadata, reply, args }) => {
-        try {
-            // 1. Identify Target
-            const mentioned = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
-            const quoted = msg.message?.extendedTextMessage?.contextInfo?.participant
-            const inputArg = args[0] ? args[0].replace(/[^0-9]/g, '') : null
-            
-            let rawTarget = mentioned || quoted || (inputArg ? `${inputArg}@s.whatsapp.net` : null) || msg.key.participant || msg.key.remoteJid
-            
-            // Standardize to @s.whatsapp.net (Crucial for Bio/Name)
-            let targetJid = rawTarget.split(':')[0].split('@')[0] + '@s.whatsapp.net'
-            const cleanPN = targetJid.split('@')[0]
+  name: 'whois',
+  description: 'Get info about a user',
+  alias: ['user'],
+  category: 'info',
+  handler: async ({ msg, Dave, from, isGroup, groupMetadata, reply, args }) => {
+    try {
+      const mentioned = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
+      const quotedParticipant = msg.message?.extendedTextMessage?.contextInfo?.participant
+      const inputJid = args[0] ? (args[0].includes('@') ? args[0] : args[0].replace(/[^0-9]/g, '') + '@s.whatsapp.net') : null
+      const sender = msg.key?.participant || msg.key?.remoteJid || ''
 
-            // 2. Force Fetch Name & Bio (The "Royboy" Fix)
-            let userName = 'Unknown'
-            let bio = 'No Bio / Private'
+      // 1. Identify the raw target (LID or JID)
+      const rawTarget = quotedParticipant || mentioned || inputJid || sender
+      if (!rawTarget) return reply('❌ Could not identify user.')
 
-            // Check if it's the sender first
-            if (targetJid === (msg.key.participant || msg.key.remoteJid)) {
-                userName = msg.pushName || 'Unknown'
-            } else {
-                // Try to find the name in group metadata if in a group
-                if (isGroup && groupMetadata?.participants) {
-                    const p = groupMetadata.participants.find(v => v.id === targetJid)
-                    // Note: Baileys usually doesn't store PushNames in groupMetadata 
-                    // unless that person has spoken recently.
-                }
-                userName = `@${cleanPN}` // Default to @Number if name is cached nowhere
-            }
+      // 2. Convert to standardized JID and clean Phone Number
+      const pnFull = await lidToPhone(Dave, rawTarget)
+      const targetJid = pnFull.includes('@') ? pnFull : pnFull + '@s.whatsapp.net'
+      const cleanPn = targetJid.split('@')[0] // This removes the @s.whatsapp.net
 
-            // 3. Fetch Bio (About) - Using the standardized JID
-            try {
-                const status = await Dave.fetchStatus(targetJid)
-                if (status && status.status) {
-                    bio = status.status
-                }
-            } catch (e) {
-                // If it fails, it's 99% a privacy setting ("My Contacts" only)
-                bio = '🔒 Private'
-            }
+      // 3. Get User Data (Database)
+      const user = await User.findOne({ userId: targetJid }) || await User.findOne({ userId: rawTarget })
 
-            // 4. Fetch Profile Picture
-            let pfp = 'https://i.ibb.co/j3pRQf6/user.png'
-            try {
-                pfp = await Dave.profilePictureUrl(targetJid, 'image')
-            } catch {}
+      // 4. Fetch Bio (About) - Using standardized JID
+      let bio = 'No bio'
+      try {
+        const statusData = await Dave.fetchStatus(targetJid)
+        if (statusData && statusData.status) bio = statusData.status
+      } catch {
+        // Fallback for some privacy settings or LID issues
+        bio = 'Hidden or Not Available'
+      }
 
-            // 5. Database Lookup
-            const user = await User.findOne({ userId: targetJid })
-            
-            // 6. Role in group
-            let role = 'N/A'
-            if (isGroup && groupMetadata?.participants) {
-                const uData = groupMetadata.participants.find(u => u.id === targetJid)
-                if (uData) role = uData.admin ? '🛡 Admin' : '👤 Member'
-            }
+      // 5. Handle Name 
+      // If the target is the sender, use pushName. 
+      // Otherwise, check if they are in the group to find their name (if available) or use PN.
+      let targetName = 'Unknown'
+      if (rawTarget === sender || targetJid === sender) {
+        targetName = msg.pushName || 'You'
+      } else {
+        targetName = cleanPn // Default to PN if no store/name found
+      }
 
-            const text = `👤 *User Info*\n\n• *Number:* ${cleanPN}\n• *Name:* ${userName}\n• *About:* ${bio}\n• *Role:* ${role}\n• *Coins:* ${user?.coins || 0}\n• *Tag:* ${user?.customTag || 'None'}`
+      // 6. Fetch Profile Picture
+      let pfp
+      try {
+        pfp = await Dave.profilePictureUrl(targetJid, 'image')
+      } catch {
+        pfp = 'https://i.ibb.co/j3pRQf6/user.png'
+      }
 
-            await Dave.sendMessage(from, { 
-                image: { url: pfp }, 
-                caption: text, 
-                mentions: [targetJid] 
-            }, { quoted: msg })
+      const spousePn = user?.spouse ? await lidToPhone(Dave, user.spouse) : null
+      const spouseJid = spousePn ? (spousePn.includes('@') ? spousePn : spousePn + '@s.whatsapp.net') : null
 
-        } catch (e) {
-            console.error(e)
-            reply('❌ Error fetching info.')
-        }
+      let role = 'N/A'
+      if (isGroup && groupMetadata?.participants) {
+        const uData = groupMetadata.participants.find(u => u.id === rawTarget || u.id === targetJid)
+        if (uData) role = uData.admin ? '🛡 Admin' : '👤 Member'
+      }
+
+      const text = `👤 *User Info*\n\n• *Name:* ${targetName}\n• *PN:* ${cleanPn}\n• *JID:* ${targetJid}\n• *Bio:* ${bio}\n• *Role:* ${role}\n• *Coins:* ${user?.coins || 0}\n• *Spouse:* ${spouseJid ? '@' + spouseJid.split('@')[0] : 'Single'}\n• *Tag:* ${user?.customTag || 'None'}`
+
+      await Dave.sendMessage(from, { image: { url: pfp }, caption: text, mentions: spouseJid ? [spouseJid] : [] }, { quoted: msg })
+    } catch (e) {
+      console.error(e)
+      reply('❌ Failed to get user info.')
     }
+  }
 },
 
   {
