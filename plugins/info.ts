@@ -54,26 +54,58 @@ export default [
     category: 'info',
     handler: async ({ msg, Dave, from, isGroup, groupMetadata, reply, args }) => {
         try {
-            // 1. Identify the target user (Mentioned -> Quoted -> Input -> Sender)
+            // 1. Identify the target
             const mentioned = msg.message?.extendedTextMessage?.contextInfo?.mentionedJid?.[0]
-            const quotedParticipant = msg.message?.extendedTextMessage?.contextInfo?.participant
-            const inputJid = args[0] ? (args[0].includes('@') ? args[0] : args[0].replace(/[^0-9]/g, '') + '@s.whatsapp.net') : null
-            const sender = msg.key?.participant || msg.key?.remoteJid || ''
+            const quoted = msg.message?.extendedTextMessage?.contextInfo?.participant
+            // If user types numbers, strip non-numeric chars
+            const inputArg = args[0] ? args[0].replace(/[^0-9]/g, '') : null
             
-            const rawTarget = mentioned || quotedParticipant || inputJid || sender
+            // Priority: Mention > Quoted > Input Number > Sender
+            let rawTarget = mentioned || quoted || (inputArg ? `${inputArg}@s.whatsapp.net` : null) || msg.key?.participant || msg.key?.remoteJid
             
             if (!rawTarget) return reply('❌ Could not identify user.')
 
-            // 2. Resolve JID and Phone Number
-            // Ensure we have the standardized format @s.whatsapp.net
-            const pnResult = await lidToPhone(Dave, rawTarget)
-            const targetJid = pnResult.includes('@') ? pnResult : pnResult + '@s.whatsapp.net'
-            const cleanPN = targetJid.split('@')[0] // FIX: Get only the number
+            // 2. Normalize JID (Convert LID to Phone if needed)
+            // We need the ID in format: 123456789@s.whatsapp.net
+            let targetJid = rawTarget
+            if (rawTarget.includes('lid')) {
+                targetJid = await lidToPhone(Dave, rawTarget) // Ensure your lidUtils handles this
+            }
+            
+            // Clean the JID to ensure no device identifiers (like :12@s.whatsapp.net)
+            targetJid = targetJid.split(':')[0].split('@')[0] + '@s.whatsapp.net'
+            const cleanPN = targetJid.split('@')[0]
 
-            // 3. Database Lookup
-            const user = await User.findOne({ userId: targetJid }) || await User.findOne({ userId: rawTarget })
+            // 3. Resolve Name
+            // If the target is the sender, we have their pushName.
+            // If target is someone else, we likely DON'T have their name unless using a contact store.
+            // Fallback: Use the phone number as the name.
+            let userName = 'Unknown'
+            
+            if (targetJid === (msg.key.participant || msg.key.remoteJid)) {
+                userName = msg.pushName || 'Unknown' 
+            } else {
+                // Try to get name from contact store (if your bot has one)
+                // Otherwise use the formatted number
+                userName = `@${cleanPN}` 
+            }
 
-            // 4. Fetch Profile Picture
+            // 4. Fetch Bio (About)
+            let bio = '🔒 Private / No Bio'
+            try {
+                // This request fails if user privacy is "My Contacts" or "Nobody"
+                const statusData = await Dave.fetchStatus(targetJid)
+                if (statusData && statusData.status) {
+                    bio = statusData.status
+                }
+            } catch (e) {
+                // 401 Unauthorized is common here due to privacy
+                // console.log(`Privacy blocked bio for ${targetJid}`)
+            }
+
+            // 5. Database & PFP
+            const user = await User.findOne({ userId: targetJid })
+            
             let pfp
             try {
                 pfp = await Dave.profilePictureUrl(targetJid, 'image')
@@ -81,37 +113,14 @@ export default [
                 pfp = 'https://i.ibb.co/j3pRQf6/user.png'
             }
 
-            // 5. Fetch Bio/Status (FIX)
-            let bio = 'No bio'
-            try {
-                // We must use the standardized targetJid (s.whatsapp.net)
-                const statusData = await Dave.fetchStatus(targetJid)
-                bio = statusData?.status || 'No bio'
-            } catch (e) {
-                // Privacy settings often block this, keep 'No bio'
-                console.log('Bio fetch failed (likely privacy):', e.message)
-            }
-
-            // 6. Resolve Name (FIX)
-            // If target is the sender, use the pushName from the message. 
-            // If target is someone else, Baileys cannot fetch the name directly unless they are in your contacts.
-            let userName = 'Unknown'
-            if (targetJid === sender || rawTarget === sender) {
-                userName = msg.pushName || 'Unknown'
-            } else {
-                // Optional: You can try to find them in the group metadata if you really need a name
-                // but usually, it defaults to Unknown for strangers.
-                userName = 'Unknown (User)'
-            }
-
-            // 7. Resolve Group Role
+            // 6. Resolve Group Role
             let role = 'N/A'
             if (isGroup && groupMetadata?.participants) {
-                const uData = groupMetadata.participants.find(u => u.id === targetJid || u.id === rawTarget)
+                const uData = groupMetadata.participants.find(u => u.id === targetJid)
                 if (uData) role = uData.admin ? '🛡 Admin' : '👤 Member'
             }
 
-            // 8. Resolve Spouse
+            // 7. Resolve Spouse
             const spousePn = user?.spouse ? await lidToPhone(Dave, user.spouse) : null
             const spouseDisplay = spousePn ? '@' + spousePn.split('@')[0] : 'Single'
 
@@ -124,7 +133,7 @@ export default [
             }, { quoted: msg })
 
         } catch (e) {
-            console.error(e)
+            console.error('Whois Error:', e)
             reply('❌ Failed to get user info.')
         }
     }
