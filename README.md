@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://davidxmd-dave-cnd.hf.space/Xylomenu.png" width="180"/><br/>
+  <img src="https://cdn.davidxtech.de/cdn/image/readme-md-img.png" width="180"/><br/>
   <span style="background:#111;color:#fff;padding:6px 12px;border-radius:6px;font-weight:600;">
     XYLO-MD - WhatsApp AI Bot 🚀
   </span>
