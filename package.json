@@ -32,7 +32,7 @@
     "adm-zip": "^0.5.16",
     "awesome-phonenumber": "latest",
     "axios": "^1.6.8",
-    "baileys": "npm:@whiskeysockets/baileys@latest",
+    "baileys": "git+https://lyfe00011-admin@bitbucket.org/lyfe00011/baileys.git",
     "canvas": "^3.2.1",
     "chart.js": "^4.5.1",
     "chartjs-node-canvas": "latest",
