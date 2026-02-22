@@ -372,6 +372,6 @@ This project is open source. Please give credit if you fork or modify it.
 
   <br>
 
-  <sub>XYLO-MD v3.0.2 — Powered by DavidXTech</sub>
+  <sub>XYLO-MD v3.0.3 — Powered by DavidXTech</sub>
 
 </div>
