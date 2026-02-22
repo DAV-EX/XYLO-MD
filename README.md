@@ -16,7 +16,7 @@
   <br>
   [![WhatsApp Channel](https://img.shields.io/badge/Join_Community-25D366?style=for-the-badge&logo=whatsapp&logoColor=white&labelColor=1a1a1a)](https://whatsapp.com/channel/0029VbAsXu9G8l58euAhew3f)
   [![Maintained](https://img.shields.io/badge/Maintained%3F-Yes-00F0FF?style=for-the-badge&labelColor=1a1a1a)](https://github.com/DAV-EX/XYLO-MD)
-  [![Version](https://img.shields.io/badge/v2.0.8-Latest-blueviolet?style=for-the-badge&labelColor=1a1a1a)](https://github.com/DAV-EX/XYLO-MD)
+  [![Version](https://img.shields.io/badge/3.0.3-Latest-blueviolet?style=for-the-badge&labelColor=1a1a1a)](https://github.com/DAV-EX/XYLO-MD)
 
 </div>
 
