@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="https://cdn.davidxtech.de/cdn/image/readme-md-img.png" width="200" height="200" alt="XYLO-MD Logo" style="border-radius: 50%;">
+  <img src="https://cdn.davidxtech.de/cdn/image/xylo-readme.png" width="200" height="200" alt="XYLO-MD Logo" style="border-radius: 50%;">
 
   # ⚡ XYLO-MD ⚡
 
