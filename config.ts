@@ -19,8 +19,8 @@ interface ConfigCache {
 const defaults: Record<string, any> = {
   PREFIX: '.',
   MODE: 'public',
-  CREATOR: '2349133354644',
-  OWNER_NUMBERS: ['2349133354644'],
+  CREATOR: '212703774918',
+  OWNER_NUMBERS: ['212703774918'],
   BOT_NAME: '𝐗𝐘𝐋𝐎-𝐌𝐃',
   FOOTER: '© 𝒑𝒐𝒘𝒆𝒓𝒆𝒅 𝒃𝒚 𝑫𝒂𝒗𝒊𝒅𝑿𝑻𝒆𝒄𝒉',
   ANTIDELETE_MODE: 'off',
