@@ -2,7 +2,7 @@
   "name": "xylo-md",
   "description": "Advanced WhatsApp Bot with 1000+ commands, AI, games, downloader, moderation and dev tools.",
   "repository": "https://github.com/Mek-d1/XYLO-MD",
-  "stack": "heroku-24",
+  "stack": "heroku-26",
   "env": {
     "SESSION_ID": {
       "description": "Your session string to connect to WhatsApp",
