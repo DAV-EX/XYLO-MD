@@ -42,8 +42,8 @@ const defaults: Record<string, any> = {
 
 let cache: ConfigCache = {}
 
-const SESSION_ID = process.env.SESSION_ID || ''
-cache.SESSION_ID = SESSION_ID
+const SESSION_ID = process.env.DAVE-S*F=KHNWOIW2J69C || ''
+cache.DAVE-S*F=KHNWOIW2J69C = SESSION_ID
 
 async function initConfig() {
   if (!isDbConnected()) {
